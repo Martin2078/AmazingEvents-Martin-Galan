@@ -139,6 +139,10 @@ table,tr,th,td{
     width: 80vw;
     padding: 0.4rem;
 }
+.Heads{
+    font-weight: bolder;
+    background-color: gray;
+}
 
 
 
@@ -154,7 +158,10 @@ footer{
     color: white;
 }
 .socials{
-    padding: 1rem;
+    padding: 1rem;   
+}
+.socials>img{
+    height: 3rem;
 }
 
 
