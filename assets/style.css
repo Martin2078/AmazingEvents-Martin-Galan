@@ -50,6 +50,17 @@ li>a{
 .searchNav{
     display: flex;
 }
+.searchNav>a{
+    text-decoration: none;
+}
+.material-symbols-outlined {
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 48
+}
+
 .card-conteiner{
     display: flex;
     flex-direction: row ;
@@ -57,6 +68,10 @@ li>a{
     flex-wrap: wrap;
     justify-content: center;
     margin-bottom: 1rem;
+}
+.carousel-caption>h1{
+    font-size: 4rem;
+    text-shadow: 3px 3px rgb(216, 2, 2);
 }
 h5{
     height: 6vh;
