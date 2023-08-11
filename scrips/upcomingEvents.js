@@ -116,12 +116,19 @@ categoriesConteiner.addEventListener("change",()=>{
 const buscador=document.getElementById(`search`)
 buscador.addEventListener(`keyup`,(e)=>{
   const buscado=buscarPorTexto(e.target.value.toLowerCase().replaceAll(" ",""),data.events)
-  if (buscado.length>0) {
-    const crearBuscado=mostrarUpcomingEvents(buscado)
-    mainDiv.innerHTML+=crearBuscado
-    }else{
-      mainDiv.innerHTML="Lo lamentamos, no hay nada que concuerde con esa busqueda!"
-    }
+  const cruzado=filtroCruzados(e.target.value.toLowerCase().replaceAll(" ",""),data.events)
+  if (cruzado.length>0) {
+    const crear=mostrarUpcomingEvents(cruzado)
+    mainDiv.innerHTML+=crear
+  }else{
+    if (buscado.length>0) {
+      const crearBuscado=mostrarUpcomingEvents(buscado)
+      mainDiv.innerHTML+=crearBuscado
+      }else{
+        mainDiv.innerHTML="Lo lamentamos, no hay nada que concuerde con esa busqueda!"
+      }
+  }
+  
 }
 
 )
@@ -139,3 +146,16 @@ function buscarPorTexto(e,events) {
   return buscar
 }
 
+
+
+function filtroCruzados(e,events) {
+  const buscado=buscarPorTexto(e,events)
+  const filtrado=filtradoPorCheckbox(events)
+  const mix = []
+  for (const busc of buscado) {
+    if ( filtrado.includes(busc) ) {
+      mix.push(busc)
+    }
+  }
+  return mix
+}
