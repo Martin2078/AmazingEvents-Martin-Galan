@@ -127,9 +127,8 @@ function buscarPorTexto(e,events) {
 
  buscador.addEventListener(`keyup`,(e)=>{
   const buscado=buscarPorTexto(e.target.value.toLowerCase().replaceAll(" ",""),data.events)
-  console.log(buscado);
   const cruzado=filtradoPorCheckbox(buscado)
-  console.log(cruzado);
+
 
   
     if (cruzado.length>0) {
