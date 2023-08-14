@@ -29,6 +29,10 @@ mainDiv.innerHTML+=tarjetas
 
 
 
+
+
+
+
 const categoriesConteiner=document.getElementById(`categories-div`)
 //creo un set(sin repetir) de categories y añado las que no se repitan
 const uniques= new Set();
@@ -79,38 +83,42 @@ categoriesConteiner.innerHTML=categories
 const checkboxes=document.querySelectorAll(`.checkboxes`)//CONTENEDORES
 //convierto la nodelist en un array
 const checkboxArray=Array.from(checkboxes)
+const buscador=document.getElementById(`search`)//CONTENEDOR
 
 function filtradoPorCheckbox(events) {
   //guardo en una nodelist los input checked
   const checkedInput=document.querySelectorAll(`input[type=checkbox]:checked`)
+  if (checkedInput.length===0) {
+    return events
+  }
   //convierto en un array la nodelist
   const checkedArray=Array.from(checkedInput).map(checkbox=>checkbox.value)
-
   const filtrarPorCheckbox = events.filter((event)=>checkedArray.includes(event.category))
   return filtrarPorCheckbox
 }
 
 categoriesConteiner.addEventListener("change",()=>{
-  const filtrados=filtradoPorCheckbox(data.events)
-  if (filtrados.length>0) {
-    const tarjetasFiltradas=mostrarTarjetas(filtrados)
-    mainDiv.innerHTML+=tarjetasFiltradas
+  const buscado=buscarPorTexto(buscador.value.toLowerCase().replaceAll(" ",""),data.events)
+  const cruzado=filtradoPorCheckbox(buscado)
+    if (cruzado.length>0) {
+      const crear=mostrarTarjetas(cruzado)
+      mainDiv.innerHTML+=crear
     }else{
-    mainDiv.innerHTML=tarjetas
+      mainDiv.innerHTML="Lo lamentamos,no hay nada que concuerde con ese busqueda!"
     }
 })
 
-
+console.log(buscador.value.length);
 
 
 //SEARCH
-const buscador=document.getElementById(`search`)//CONTENEDOR
-
 function buscarPorTexto(e,events) {
   const buscar=[]
+  if (e.length===0) {
+    return events
+  }
   for (const event of events) {
    let nombre=event.name.toLowerCase().replace(" ","")
-   nombre.toLowerCase()
    if (nombre.includes(e)) {
      buscar.push(event)
    }}
@@ -119,37 +127,17 @@ function buscarPorTexto(e,events) {
 
  buscador.addEventListener(`keyup`,(e)=>{
   const buscado=buscarPorTexto(e.target.value.toLowerCase().replaceAll(" ",""),data.events)
-  const cruzado=filtroCruzados(e.target.value.toLowerCase().replaceAll(" ",""),data.events)
+  console.log(buscado);
+  const cruzado=filtradoPorCheckbox(buscado)
+  console.log(cruzado);
 
-  if (cruzado.length>0) {
-    const crear=mostrarTarjetas(cruzado)
-    mainDiv.innerHTML+=crear
-  }else{
-    if (buscado.length>0) {
-      const crearBuscado=mostrarTarjetas(buscado)
-    mainDiv.innerHTML+=crearBuscado
-      }else{
-        mainDiv.innerHTML="Lo lamentamos, no hay nada que concuerde con esa busqueda!"
-      }
-  }
-    
-})
-
-
-
-//CRUZADOS
-
-function filtroCruzados(e,events) {
-  const buscado=buscarPorTexto(e,events)
-  const filtrado=filtradoPorCheckbox(events)
-  const mix = []
-  for (const busc of buscado) {
-    if ( filtrado.includes(busc) ) {
-      mix.push(busc)
+  
+    if (cruzado.length>0) {
+      const crear=mostrarTarjetas(cruzado)
+      mainDiv.innerHTML+=crear
+    }else{
+      mainDiv.innerHTML="Lo lamentamos,no hay nada que concuerde con ese busqueda!"
     }
-  }
-  return mix
-}
-
+})
 
 
