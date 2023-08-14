@@ -81,81 +81,71 @@ categoriesConteiner.innerHTML=categories
 
 
 //events
+
+//CHECKBOX
 //llamo al contenedor de los checkbox
-const checkboxes=document.querySelectorAll(`.checkboxes`)
+const checkboxes=document.querySelectorAll(`.checkboxes`)//CONTENEDORES
 //convierto la nodelist en un array
 const checkboxArray=Array.from(checkboxes)
+const buscador=document.getElementById(`search`)//CONTENEDOR
 
-function filtradoPorCheckbox() {
+function filtradoPorCheckbox(events) {
   //guardo en una nodelist los input checked
   const checkedInput=document.querySelectorAll(`input[type=checkbox]:checked`)
+  if (checkedInput.length===0) {
+    return events
+  }
   //convierto en un array la nodelist
   const checkedArray=Array.from(checkedInput).map(checkbox=>checkbox.value)
-  
-
-  // filtros
-  const filtrarPorCheckbox = data.events.filter((event)=>checkedArray.includes(event.category))
-  const filtrarPorFecha=filtrar(filtrarPorCheckbox,moment)
-  return filtrarPorFecha
+  const filtrarPorCheckbox = events.filter((event)=>checkedArray.includes(event.category))
+  return filtrarPorCheckbox
 }
+
 
 categoriesConteiner.addEventListener("change",()=>{
-  
-  const filtrados=filtradoPorCheckbox()
-  
-  if (filtrados.length>0) {
-  const tarjetasFiltradas=mostrarUpcomingEvents(filtrados)
-  mainDiv.innerHTML+=tarjetasFiltradas
-  }else{
-    mainDiv.innerHTML=upcomingEvents
-  }
+  const buscado=buscarPorTexto(buscador.value.toLowerCase().replaceAll(" ",""),upcoming)
+  const cruzado=filtradoPorCheckbox(buscado)
+
+    if (cruzado.length>0) {
+      const crear=mostrarUpcomingEvents(cruzado)
+      mainDiv.innerHTML+=crear
+    }else{
+      mainDiv.innerHTML="Lo lamentamos,no hay nada que concuerde con ese busqueda!"
+    }
+
 })
 
+console.log(buscador.value.length);
 
 
-const buscador=document.getElementById(`search`)
-buscador.addEventListener(`keyup`,(e)=>{
-  const buscado=buscarPorTexto(e.target.value.toLowerCase().replaceAll(" ",""),data.events)
-  const cruzado=filtroCruzados(e.target.value.toLowerCase().replaceAll(" ",""),data.events)
-  if (cruzado.length>0) {
-    const crear=mostrarUpcomingEvents(cruzado)
-    mainDiv.innerHTML+=crear
-  }else{
-    if (buscado.length>0) {
-      const crearBuscado=mostrarUpcomingEvents(buscado)
-      mainDiv.innerHTML+=crearBuscado
-      }else{
-        mainDiv.innerHTML="Lo lamentamos, no hay nada que concuerde con esa busqueda!"
-      }
-  }
-  
-}
+//SEARCH
 
-)
+
 function buscarPorTexto(e,events) {
- const buscar=[]
- for (const event of events) {
-  if (event.date>moment) {
-  let nombre=event.name.toLowerCase().replace(" ","")
-  nombre.toLowerCase()
-  if (nombre.includes(e)) {
-    buscar.push(event)
+  const buscar=[]
+  if (e.length===0) {
+    return events
   }
-  }
-  }
-  return buscar
-}
+  for (const event of events) {
+   let nombre=event.name.toLowerCase().replace(" ","")
+   if (nombre.includes(e)) {
+     buscar.push(event)
+   }}
+   return buscar
+ }
 
-
-
-function filtroCruzados(e,events) {
-  const buscado=buscarPorTexto(e,events)
-  const filtrado=filtradoPorCheckbox(events)
-  const mix = []
-  for (const busc of buscado) {
-    if ( filtrado.includes(busc) ) {
-      mix.push(busc)
+ buscador.addEventListener(`keyup`,(e)=>{
+  const buscado=buscarPorTexto(e.target.value.toLowerCase().replaceAll(" ",""),upcoming)
+  const cruzado=filtradoPorCheckbox(buscado)
+  
+    if (cruzado.length>0) {
+      const crear=mostrarUpcomingEvents(cruzado)
+      mainDiv.innerHTML+=crear
+    }else{
+      mainDiv.innerHTML="Lo lamentamos,no hay nada que concuerde con ese busqueda!"
     }
-  }
-  return mix
-}
+  
+    
+  
+    
+})
