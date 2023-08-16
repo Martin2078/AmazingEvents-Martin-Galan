@@ -156,13 +156,20 @@ form{
 }
 
 /* Stats */
+#statsDiv{
+    padding: 3rem;
+    gap: 1rem;
+}
 table,tr,th,td{
-    border: 2px solid black !important;
     border-collapse: collapse;
-    margin: 5vh 0;
     width: 80vw;
     padding: 0.4rem;
+    
 }
+tr{
+    border: 1px solid black !important;
+}
+
 .Heads{
     font-weight: bolder;
     background-color: gray;

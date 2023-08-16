@@ -1,12 +1,28 @@
 const detailConteiner=document.getElementById(`details-box`)
-const moment = data.currentDate
-const parametros=location.search
-const objetoURL=new URLSearchParams(parametros)
-const id=objetoURL.get(`identifyer`)
-const objetoEvent = data.events.find(event=>event._id===id)
+let moment 
+let dataEvents=[]
+fetch(`https://mindhub-xj03.onrender.com/api/amazing`)
+ .then(respuesta=>respuesta.json())
+  .then(respuesta=>{
+  moment=respuesta.currentDate
+  dataEvents=respuesta.events
 
-function crearDetail(event,dates) {
-        if (event.date>dates) {
+  const parametros=location.search
+  const objetoURL=new URLSearchParams(parametros)
+  const id=objetoURL.get(`identifyer`)
+  const objetoEvent = dataEvents.find(event=>event._id==id)
+  
+  const tarjeta=crearDetail(objetoEvent,moment)
+  detailConteiner.innerHTML=tarjeta
+})
+.catch(error=>console.log(error))
+
+
+
+
+
+function crearDetail(event,actual) {
+        if (event.date>actual) {
           return  `<div class="card mb-3 col-md-8 details-card" >
         <div class="row g-0">
           <div class="col-md-6">
@@ -47,5 +63,4 @@ function crearDetail(event,dates) {
         }
     }
     
-const tarjeta=crearDetail(objetoEvent,moment)
-detailConteiner.innerHTML=tarjeta
+
