@@ -1,7 +1,4 @@
-import { mainDiv,uniques,categoriesConteiner,checkboxes,checkboxArray,buscador } from "../modules/functions.js"
-import { crearTarjeta,mostrarTarjetas,uniquesCategory,crearCategorie,mostrarCategorie,filtradoPorCheckbox,buscarPorTexto } from "../modules/functions.js";
-
-
+import { mainDiv,uniques,categoriesConteiner,checkboxes,checkboxArray,buscador,crearTarjeta,mostrarTarjetas,uniquesCategory,crearCategorie,mostrarCategorie,filtradoPorCheckbox,buscarPorTexto } from "../modules/functions.js"
 
 let dataEvents=[]
 fetch('https://mindhub-xj03.onrender.com/api/amazing')

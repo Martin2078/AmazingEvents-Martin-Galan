@@ -2,7 +2,7 @@ const statisticsTable=document.getElementById(`statisticsTable`)
 const pastStatisticsTable=document.getElementById(`pastStatisticsTable`)
 const upcomingStatisticsTable=document.getElementById(`upcomingStatisticsTable`)
 
-import {filtrarPast,filtrarUpcoming,uniquesCategory} from "../modules/functions.js"
+import {filtrarPast,filtrarUpcoming,uniquesCategory,crearFilas,mostrarStatistics,cadaUno,filtrado} from "../modules/functions.js"
 
 let moment 
 let dataEvents=[]
@@ -51,80 +51,3 @@ fetch("https://mindhub-xj03.onrender.com/api/amazing")
 .catch(error=>console.log(error))
 
 
-function crearFilas(events) {
-    let trs=""
-    for (const event of events) {
-        trs+=`<tr>
-        <td>${event.category}</td>
-        <td>$${event.revenue}</td>
-        <td>${event.porcentajeAssist}%</td>
-        </tr>`
-    }
-    return trs
-}
-function mostrarStatistics(higuest,lowest,largerCapacity) {
-    let trs=`<tr>
-        <td>${higuest[0].name} (${higuest[0].porcentajeAssist}%)</td>
-        <td>${lowest[0].name} (${lowest[0].porcentajeAssist}%)</td>
-        <td>${largerCapacity[0].name} (${largerCapacity[0].capacity})</td>
-        </tr>`
-    
-    return trs
-}
-function cadaUno(events,cuando) {
-const porcentajeCadaUno=[]
-if (cuando==="past") {
-    for (const event of events) {
-        let capacity=event.capacity
-        let porcentajeAssist=((event.assistance*100)/capacity).toFixed(2)
-            porcentajeCadaUno.push({
-                name:event.name,
-                capacity:capacity,
-                porcentajeAssist:porcentajeAssist,
-            })
-            }
-}else{
-    for (const event of events) {
-        let capacity=event.capacity
-        let porcentajeAssist=((event.estimate*100)/capacity).toFixed(2)
-            porcentajeCadaUno.push({
-                name:event.name,
-                capacity:capacity,
-                porcentajeAssist:porcentajeAssist,
-            })
-            }
-}
-   
-    return porcentajeCadaUno
-    }
-
-
-function filtrado(key,events,categorie,prop) {
-const arrayObjetos=[]
-   for (let i = 0; i < categorie.length; i++) {
-    let revenue=0
-    let capacity=0
-    let porcentajeAssist=0
-
-    const result = events.filter(c => c[key] === categorie[i]);
-    for (const element of result) {
-        revenue += (element[prop]*element.price)
-    }
-    for (const element of result) {
-        capacity += element.capacity
-    }
-    for (const element of result) {
-        porcentajeAssist += element[prop]
-    }
-    porcentajeAssist=((porcentajeAssist*100)/capacity).toFixed(2)
-    
-    
-    arrayObjetos.push({
-        category:categorie[i],
-        revenue:revenue.toLocaleString("es-ES"),
-        capacity:capacity,
-        porcentajeAssist:porcentajeAssist,
-    })
-   }
-    return arrayObjetos         
-}
